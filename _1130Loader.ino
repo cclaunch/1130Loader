@@ -209,16 +209,11 @@ void loop() {
     }
   }
 
-  // first see if we need to activate or deactivate control over the 1130
+  // first see if we need to activate control of the 1130
   if (act == 1) {
     digitalWrite(ACTIVATE,  HIGH);
     Serial.println("Activated - device has control of Program Start button");
     act = 0;
-  }
-  if (deact == 1) {
-    digitalWrite(ACTIVATE,  HIGH);
-    Serial.println("Deactivated - Program Start button can be used normally");
-    deact = 0;
   }
 
   // got a valid word, lets load into the 1130
@@ -251,4 +246,10 @@ void loop() {
   digitalWrite(CES1, LOW);
   digitalWrite(CES0, LOW);
 
+  // lastly, see if we need to deactivate control of the 1130
+  if (deact == 1) {
+    digitalWrite(ACTIVATE,  HIGH);
+    Serial.println("Deactivated - Program Start button can be used normally");
+    deact = 0;
+  }
 }
