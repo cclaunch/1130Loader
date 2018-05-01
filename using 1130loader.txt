@@ -1,0 +1,21 @@
+Using the IBM 1130 loader:
+
+Flip down all 16 Console Entry Switches (on faceplate of the console printer)
+
+Rotate the Mode switch to LOAD
+
+Connect the USB cable from the console Arduino to a personal computer or terminal running a serial protocol at 9600 baud, 8-n-1 and wait for the prompt to appear.
+
+The only characters that are valid to send are hexidecimal digits, #, @, return and new line. Each line should be four hex digits, optionally with a # or @ added to the start of the word. 
+
+The loader begins in disabled mode. The # character will toggle the device between disabled and enabled modes, while loading the value specified by the four hex digits into the IAR. This is the beginning address where subsequent words will be loaded, and where execution will begin when the mode switch is switched away from LOAD mode. 
+
+Entries that consist only of four hex digits will be loaded into core, after which the address is automatically advanced by one. Thus, a stream of lines of 4 hex digits will load a number of words into core in sequential locations starting from the current IAR.
+
+If a line of four hex digits has a @ at the start, the word will be loaded into the IAR rather than loaded into core. This sets the address for the next word to be stored, or the address for execution when the mode switch is moved away from LOAD. 
+
+Thus, one typically would set the starting memory location with the initial activation command in a line such as #0100 then issue a number of lines of 4 hex digits that are placed in core sequentially beginning at address 0x0100. Lines with @ at the start of the line will skip to another location for the lines following this. 
+
+To end the session, the user enters the address where the CPU should begin execution in a line with a # at the start, which loads the IAR with that address then disables control of the machine.
+
+Once the device confirms that it has been deactivated, the user turns the rotary MODE switch to RUN (or one of the single stepping modes) and pushes Program Start to begin normal operations. 
