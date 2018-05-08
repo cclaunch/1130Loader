@@ -18,6 +18,10 @@
 #define ProgStart 5
 #define LoadIAR 6
 
+int load = 0;
+int deact = 0;
+int act = 0;
+
 void setup() {
   // put your setup code here, to run once:
   pinMode(CES15, OUTPUT);
@@ -151,9 +155,6 @@ void loop() {
   int incomingchar = 0;
   char newword[5] = {0,0,0,0,0};
   int pointer = 0;
-  int load = 0;
-  int deact = 0;
-  int act = 0;
 
   Serial.println(">");
   while (1) {
