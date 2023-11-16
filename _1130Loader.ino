@@ -409,6 +409,7 @@ void loop() {
     digitalWrite(ACTIVATE,  ACTIVATEON);        // removes power from PROG START button to let us control 1130
     Serial.println("Activated - device has control of Program Start button");
     activated = 1;
+    saveaddr[0] = 0;
     act = 0;
   }
 
