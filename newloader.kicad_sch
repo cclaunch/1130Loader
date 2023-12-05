@@ -3255,7 +3255,7 @@
     (property "Value" "CES" (at 198.755 22.86 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x16_P2.54mm_Vertical_SMD_Pin1Left" (at 199.39 43.18 0)
+    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x16_P2.54mm_Vertical_SMD_Pin1Right" (at 199.39 43.18 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 199.39 43.18 0)
