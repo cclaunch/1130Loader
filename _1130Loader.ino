@@ -139,10 +139,7 @@ void activateCES(char* theword) {
     bits = theword[i];  // grab each hex character from input
     bits -= 48;         // ASCII digits are 48 to 57
     if (bits > 16) {
-      bits -= 7;        // lower case characters A-F should be 10 to 15 but are 65-70 so 65 - 48 - 7 = 10
-    }
-    if (bits > 16) {
-      bits -= 32;       // upper case characters A-F are 97-102 so 97 - 48 - 7 - 32 = 10
+      bits -= 39;       // upper case characters A-F are 97-102 so 97 - 48 - 39 = 10
     }
     if (i == 0) {
       if (bitRead(bits,3) == 1) {
@@ -276,14 +273,6 @@ void loop() {
         continue;                                 // end input loop and go execute
       }
       // turn on flags when we encounter the command characters
-      if (incomingchar == ZEROCHAR) {          // store NNNN words of zero in memory
-        zero = 1;
-        continue;                              // mark command and continue collecting the four characters
-      }
-      if (incomingchar == LOADCHAR) {          // load the IAR with value AAAA
-        load = 1;
-        continue;                              // mark command and continue collecting the four characters
-      }
       if (incomingchar == ACTIVATECHAR) {      // request to activate or deactivate our control over the 1130
         if (activated == 1) {
           deact = 1;
@@ -295,6 +284,14 @@ void loop() {
         continue;                              // mark command and continue collecting the four characters
       }
 
+      if (incomingchar == ZEROCHAR) {          // store NNNN words of zero in memory
+        zero = 1;
+        continue;                              // mark command and continue collecting the four characters
+      }
+      if (incomingchar == LOADCHAR) {          // load the IAR with value AAAA
+        load = 1;
+        continue;                              // mark command and continue collecting the four characters
+      }
       if (incomingchar == STARTCHAR) {         // save the start address AAAA of this code
         saved = 1;
         continue;                              // mark command and continue collecting the four characters
@@ -307,9 +304,24 @@ void loop() {
          Serial.println("");
          continue;                             // didn't save char, go back to read input
       }
-      if (pointer < 4) newword[pointer] = incomingchar;
+      if (pointer < 4) {
+        newword[pointer] = incomingchar;
+      }
       pointer++;
+      if (pointer > 4) {
+        Serial.print("ignoring excess character ");
+        Serial.write(incomingchar);
+        Serial.println("");
+      }
       if (pointer == 4) {
+        if (activated == 0) {
+          Serial.println("ignoring word because loader is not activated");
+          saved = 0;
+          pointer = 0;
+          zero = 0;
+          load = 0;
+          continue;                            // we reset and go back to collect another line of input from serial
+        } 
         if (checkword(newword)) {       // verify that XXXX is valid hexadecimal
           if (zero == 1) {                     // document request to zero out 0xNNNN words from this point onward
             times = (int)strtol(newword, NULL, 16);
