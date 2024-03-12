@@ -1,6 +1,6 @@
 # 1130Loader
 
-This is a small modification to an IBM 1130 that allows users to enter commands from a PC either directly or through a file, entering data words into core. This is version 2 of the design, a significant enhancement. 
+This is a small modification to an IBM 1130 that allows users to enter commands from a PC either directly or through a file, entering data words into core. This is version 4 of the design, an important enhancement. 
 
 Manually toggling in programs is a time consuming affair, flipping the 16 Console Entry Switches and pushing the Program Start button to enter each word sequentially. Every change in the area of core to be loaded requires that the address be set in those entry switches and the Load IAR button be pressed. 
 
@@ -12,4 +12,4 @@ Physically the loader consists of an Arduino Mega 2560 and a custom shield that 
 
 The code allows you to reassign Arduino pins, change the polarity of activation of the pins, substitute different command characters and change the prompt character. 
 
-This project is being updated on github, thus it has the new Arduino code and the design of the shield, but still needs the mounting design to be included and an updated wiring diagram. 
+This project still needs the mounting design to be included. 
