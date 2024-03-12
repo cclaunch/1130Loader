@@ -11,5 +11,3 @@ To use the loader, connect a serial connection to the USB connector on the 1130 
 Physically the loader consists of an Arduino Mega 2560 and a custom shield that interfaces it to the IBM 1130. One 16 position connector is wired to the 16 console entry switches on the faceplate of the console typewriter. A 6 position connector brings +12V power from the 1130 power supplies and connects wires to the Program Start and Load IAR buttons on the side of the 1130 keyboard. The loader is mounted on the inside of the console typewriter, behind the front panel below the three pushbuttons Tab, Space and Return. The USB connector is mounted elsewhere on the 1130 (TBD). 
 
 The code allows you to reassign Arduino pins, change the polarity of activation of the pins, substitute different command characters and change the prompt character. 
-
-This project still needs the mounting design to be included. 
