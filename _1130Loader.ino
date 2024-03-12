@@ -1,6 +1,6 @@
 // ============================================================================================
 //
-//   CONSOLE LOADER FOR IBM 1130
+//   CONSOLE LOADER FOR IBM 1130     Version 4
 //
 // ============================================================================================
 
@@ -29,16 +29,9 @@
 #define CESON HIGH
 #define CESOFF LOW
 
-// Define Arduino pin to activate control of the 1130
-#define ACTIVATE 6
-
-// change these depending on whether you take control of buttons with high or low on the pin
-#define ACTIVATEON LOW
-#define ACTIVATEOFF HIGH
-
 // Define Arduino pins for the Prog Start and Load IAR buttons
-#define ProgStartNC 7
-#define ProgStartNO 8
+#define ProgStartNC 8
+#define ProgStartNO 6
 #define LoadIAR 9
 
 // change these depending on whether you 'press' the button with high or low on the pin
@@ -100,11 +93,8 @@ void setup() {
   pinMode(CES15, OUTPUT);
   digitalWrite(CES15, CESOFF);
 
-  pinMode(ACTIVATE, OUTPUT);
-  digitalWrite(ACTIVATE, ACTIVATEOFF); // operator has control of ProgStart until we activate
-
   pinMode(ProgStartNC, OUTPUT);
-  digitalWrite(ProgStartNC, BUTTONOFF);
+  digitalWrite(ProgStartNC, BUTTONON);
   pinMode(ProgStartNO, OUTPUT);
   digitalWrite(ProgStartNO, BUTTONOFF);
 
@@ -366,7 +356,7 @@ void loop() {
   // execution section of the loop, once we collected a command request and a hex data value
 
   // first see if we need to deactivate control of the 1130
-  if (deact == 1) {                             // we shut down the control over the 1130 -- the PROG START button works for operator
+  if (deact == 1) {                             // we shut down the control over the 1130
 
     // do we have a saved start address? If so, set IAR to that value
     if (saveaddr[0] != 0)  {
@@ -382,9 +372,10 @@ void loop() {
     }
 
     // proceed with deactivation
-    digitalWrite(ACTIVATE,  ACTIVATEOFF);
-    digitalWrite(ProgStartNC, BUTTONOFF);
-    Serial.println("Deactivated - Program Start button can be used normally");
+    digitalWrite(ProgStartNO, BUTTONOFF);
+    digitalWrite(ProgStartNC, BUTTONON);
+    digitalWrite(LoadIAR, BUTTONOFF);
+    Serial.println("Deactivated - turn off Load mode");
     deact = 0;
     activated = 0;
     saveaddr[0] = 0;
@@ -400,11 +391,13 @@ void loop() {
           load = 0;
         } else {                                // push PROG START button to set the CES into memory at IAR address
           digitalWrite(ProgStartNC, BUTTONOFF);
+          delayMicroseconds(500);
           digitalWrite(ProgStartNO, BUTTONON);
         }
         delay (500);
         // release the PROG START and LOAD IAR buttons
         digitalWrite(ProgStartNO, BUTTONOFF);
+        delayMicroseconds(500);
         digitalWrite(ProgStartNC, BUTTONON);
         digitalWrite(LoadIAR, BUTTONOFF);
         delay (100);
@@ -418,8 +411,8 @@ void loop() {
   if (act == 1) {
     digitalWrite(ProgStartNC, BUTTONON);        // this signal HIGH when button is not pushed
     digitalWrite(ProgStartNO, BUTTONOFF);       // this signal is LOW when button is not pushed
-    digitalWrite(ACTIVATE,  ACTIVATEON);        // removes power from PROG START button to let us control 1130
-    Serial.println("Activated - device has control of Program Start button");
+      digitalWrite(LoadIAR, BUTTONOFF);
+    Serial.println("Activated - switch mode to LOAD");
     activated = 1;
     saveaddr[0] = 0;
     act = 0;
