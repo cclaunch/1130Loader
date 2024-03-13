@@ -294,6 +294,10 @@ void loop() {
          Serial.println("");
          continue;                             // didn't save char, go back to read input
       }
+      if ((incomingchar == ' ') and (pointer == 0)) {
+        Serial.println("skipping initial space");
+        continue;
+      }
       if (pointer < 4) {
         newword[pointer] = incomingchar;
       }
